@@ -12,7 +12,6 @@ public class MillerRabin {
       return true;
     }
 
-    // n = 2^d * r + 1
     BigInteger d = number.subtract(BigInteger.ONE);
     while (d.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
       d = d.divide(BigInteger.TWO);
@@ -29,7 +28,6 @@ public class MillerRabin {
 
   private static boolean testMiller(BigInteger d, BigInteger number) {
     BigInteger a = getRandomNumber(number);
-    // calculate a^d % n
     BigInteger x = a.modPow(d, number);
     if (x.equals(BigInteger.ONE) || x.equals(number.subtract(BigInteger.ONE))) {
       return true;
@@ -51,11 +49,14 @@ public class MillerRabin {
 
   // random number in [2 ... n-2]
   private static BigInteger getRandomNumber(BigInteger n) {
-    n = n.subtract(BigInteger.ONE);
+    BigInteger k = n.subtract(BigInteger.ONE);
+
     BigInteger randomNumber;
-    do {
-      randomNumber = new BigInteger(n.bitLength(), new Random());
-    } while (randomNumber.compareTo(n) >= 0 && randomNumber.equals(BigInteger.ONE));
-    return randomNumber;
+    while (true) {
+      randomNumber = new BigInteger(k.bitLength(), new Random());
+
+      if (BigInteger.ONE.compareTo(randomNumber) <= 0 && randomNumber.compareTo(n) < 0)
+        return randomNumber;
+    }
   }
 }

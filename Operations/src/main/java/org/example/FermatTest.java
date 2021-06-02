@@ -16,7 +16,7 @@ public class FermatTest {
       // pick random number in [2 ... n-2]
       BigInteger a = getRandomNumber(number);
 
-      // Fermat's little theorem
+      // Fermat's little theorem - a^(n - 1) mod n
       if (!a.modPow(number.subtract(BigInteger.ONE), number).equals(BigInteger.ONE))
         return false;
     }
@@ -27,11 +27,15 @@ public class FermatTest {
 
   // random number in [2 ... n-2]
   private static BigInteger getRandomNumber(BigInteger n) {
-    n = n.subtract(BigInteger.ONE);
+    BigInteger k = n.subtract(BigInteger.ONE);
+
     BigInteger randomNumber;
-    do {
-      randomNumber = new BigInteger(n.bitLength(), new Random());
-    } while (randomNumber.compareTo(n) >= 0 && randomNumber.equals(BigInteger.ONE));
-    return randomNumber;
+    while (true) {
+      randomNumber = new BigInteger(k.bitLength(), new Random());
+
+      if (BigInteger.ONE.compareTo(randomNumber) <= 0 && randomNumber.compareTo(n) < 0)
+        return randomNumber;
+    }
   }
+
 }
