@@ -3,10 +3,13 @@ package org.example;
 import java.math.BigInteger;
 
 public class Karatsuba {
+  private static final BigInteger CUTOFF = BigInteger.valueOf(10);
+
   public static BigInteger multiply(BigInteger x, BigInteger y) {
-    if (x.compareTo(BigInteger.TEN) < 0 || y.compareTo(BigInteger.TEN) < 0) {
+    if (x.compareTo(CUTOFF) < 0 || y.compareTo(CUTOFF) < 0) {
       return x.multiply(y);
     }
+
     int N = Math.min(x.bitLength(), y.bitLength());
     N = N / 2;
     BigInteger a = x.shiftRight(N);
