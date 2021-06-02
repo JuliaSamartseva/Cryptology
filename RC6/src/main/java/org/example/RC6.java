@@ -12,8 +12,6 @@ public class RC6 {
 
   private static int[] convBytesWords(byte[] key, int u, int c) {
     int[] tmp = new int[c];
-    for (int i = 0; i < tmp.length; i++)
-      tmp[i] = 0;
 
     for (int i = 0, off = 0; i < c; i++)
       tmp[i] = ((key[off++] & 0xFF)) | ((key[off++] & 0xFF) << 8)
@@ -22,7 +20,8 @@ public class RC6 {
     return tmp;
   }
 
-  private static int[] generateSubkeys(byte[] key) {
+  // Key schedule algorithm
+  private static int[] generateKeys(byte[] key) {
 
     int u = w / 8;
     int c = key.length / u;
@@ -165,7 +164,7 @@ public class RC6 {
 
     byte[] bloc = new byte[16];
     key = paddingKey(key);
-    S = generateSubkeys(key);
+    S = generateKeys(key);
 
 
     int lenght = 16 - data.length % 16;
@@ -201,7 +200,7 @@ public class RC6 {
     byte[] tmp = new byte[data.length];
     byte[] bloc = new byte[16];
     key = paddingKey(key);
-    S = generateSubkeys(key);
+    S = generateKeys(key);
 
     int i;
     for (i = 0; i < data.length; i++) {
